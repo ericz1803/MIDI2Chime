@@ -50,24 +50,27 @@ def main():
     s = converter.parse(filename)
     simultaneous_lines = int(input("Number of parts (at least 1): "))
     if simultaneous_lines < 1:
-        print("Needs at least 1 line.")
+        print("Needs at least 1 part.")
         return 1
     
     lines = [""] * simultaneous_lines
     #smallest note in terms of quarter divisions eg 16th = 4, 8th = 2, quarter = 1
     smallest_quarter_division = int(input("Smallest Quarter Division (16th=4, 8th=2, Quarter=1): "))
+    
     for note in s.recurse(classFilter=('Note', 'Rest', 'Chord')):
         if (note.isRest):
             dashes = round(note.duration.quarterLength * smallest_quarter_division - 1)
             lines[0] += ('-  ' + ('-  ' * dashes))
             for i in range(1, simultaneous_lines):
                 lines[i] += ('-  ' + ('-  ' * dashes))
+
         if (note.isNote):
             stars = round(note.duration.quarterLength * smallest_quarter_division - 1)
             note_name = str(map[note.nameWithOctave])
             lines[0] += (note_name + (' ' * (3 -len(note_name))) + ('*  ' * stars))
             for i in range(1, simultaneous_lines):
                 lines[i] += ('-  ' + ('-  ' * stars))
+
         if (note.isChord):
             max_i = 0
             stars = round(note.duration.quarterLength * smallest_quarter_division - 1)
@@ -77,6 +80,8 @@ def main():
                 max_i = i
             for i in range(max_i + 1, simultaneous_lines):
                 lines[i] += ('-  ' + ('-  ' * stars))
+
+
     with open(outfile, "w") as f:
         f.write("Quarter = (" + '  '.join(['*'] * smallest_quarter_division) + ')\n\n')
         for chunk in chunker(lines, max_line_length):
