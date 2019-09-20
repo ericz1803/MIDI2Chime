@@ -1,7 +1,7 @@
 # MIDI2Chime
 Converts MIDI files to Chime numbers. Outputs a text file with notes and rests.   
-`*` = hold note  
-`-` = rest
+`-` = hold note  
+`*` = rest
 
 ## Usage
 `pip install -r requirements.txt`  
