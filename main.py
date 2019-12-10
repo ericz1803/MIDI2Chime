@@ -47,6 +47,7 @@ def main():
     filename = input("Filename: ")
     outfile = input("Output filename: ")
 
+    notes = set()
     s = converter.parse(filename)
     simultaneous_lines = int(input("Number of parts (at least 1): "))
     if simultaneous_lines < 1:
@@ -67,6 +68,7 @@ def main():
         if (note.isNote):
             stars = round(note.duration.quarterLength * smallest_quarter_division - 1)
             note_name = str(map[note.nameWithOctave])
+            notes.add(map[note.nameWithOctave])
             lines[0] += (note_name + (' ' * (3 -len(note_name))) + ('-  ' * stars))
             for i in range(1, simultaneous_lines):
                 lines[i] += ('*  ' + ('*  ' * stars))
@@ -76,6 +78,7 @@ def main():
             stars = round(note.duration.quarterLength * smallest_quarter_division - 1)
             for (i, note_) in enumerate(note):
                 note_name = str(map[note_.nameWithOctave])
+                notes.add(map[note_.nameWithOctave])
                 lines[i] += (note_name + (' ' * (3 - len(note_name)))+ ('-  ' * stars))
                 max_i = i
             for i in range(max_i + 1, simultaneous_lines):
@@ -83,6 +86,7 @@ def main():
 
 
     with open(outfile, "w") as f:
+        f.write("Chimes Used: " + ','.join([str(i) for i in sorted(notes)]) + '\n')
         f.write("Quarter = (" + '  '.join(['-'] * smallest_quarter_division) + ')\n\n')
         for chunk in chunker(lines, max_line_length):
             f.write('\n'.join(chunk))
