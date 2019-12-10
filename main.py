@@ -76,7 +76,7 @@ def main():
         if (note.isChord):
             max_i = 0
             stars = round(note.duration.quarterLength * smallest_quarter_division - 1)
-            for (i, note_) in enumerate(note):
+            for (i, note_) in enumerate(reversed(note)):
                 note_name = str(map[note_.nameWithOctave])
                 notes.add(map[note_.nameWithOctave])
                 lines[i] += (note_name + (' ' * (3 - len(note_name)))+ ('-  ' * stars))
