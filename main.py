@@ -1,5 +1,10 @@
 from music21 import *
 
+from sys import platform
+if platform == "linux" or platform == "linux2":
+    import readline
+    readline.parse_and_bind("tab:complete")
+
 map = {
     "A#3": 1,
     "B-3": 1,
